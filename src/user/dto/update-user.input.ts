@@ -14,6 +14,6 @@ export class UpdateUserInput {
   @Field({ nullable: true })
   age?: number;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   bio?: string;
 }

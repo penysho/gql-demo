@@ -1,82 +1,78 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { User as PrismaUser } from '../../generated/prisma';
+import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserInput } from './dto/create-user.input';
 import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [
-    {
-      id: '1',
-      name: '田中太郎',
-      email: 'tanaka@example.com',
-      bio: 'フロントエンド開発者です',
-      age: 20,
-      createdAt: new Date('2024-01-01'),
-      updatedAt: new Date('2024-01-01'),
-    },
-    {
-      id: '2',
-      name: '佐藤花子',
-      email: 'sato@example.com',
-      bio: 'バックエンド開発者です',
-      age: 21,
-      createdAt: new Date('2024-01-02'),
-      updatedAt: new Date('2024-01-02'),
-    },
-    {
-      id: '3',
-      name: '鈴木一郎',
-      email: 'suzuki@example.com',
-      age: 22,
-      createdAt: new Date('2024-01-03'),
-      updatedAt: new Date('2024-01-03'),
-    },
-  ];
+  constructor(private prisma: PrismaService) {}
 
-  findAll(): User[] {
-    return this.users;
+  private mapPrismaUserToGraphQLUser(prismaUser: PrismaUser): User {
+    return {
+      ...prismaUser,
+      bio: prismaUser.bio ?? undefined,
+    };
   }
 
-  findOne(id: string): User {
-    const user = this.users.find((user) => user.id === id);
+  async findAll(): Promise<User[]> {
+    const users = await this.prisma.user.findMany({
+      orderBy: {
+        createdAt: 'desc',
+      },
+    });
+    return users.map((user) => this.mapPrismaUserToGraphQLUser(user));
+  }
+
+  async findOne(id: string): Promise<User> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+    });
+
     if (!user) {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-    return user;
+
+    return this.mapPrismaUserToGraphQLUser(user);
   }
 
-  create(createUserInput: CreateUserInput): User {
-    const newUser: User = {
-      id: (this.users.length + 1).toString(),
-      ...createUserInput,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    this.users.push(newUser);
-    return newUser;
+  async create(createUserInput: CreateUserInput): Promise<User> {
+    const user = await this.prisma.user.create({
+      data: {
+        ...createUserInput,
+        bio: createUserInput.bio ?? null,
+      },
+    });
+    return this.mapPrismaUserToGraphQLUser(user);
   }
 
-  update(id: string, updateData: Partial<CreateUserInput>): User {
-    const userIndex = this.users.findIndex((user) => user.id === id);
-    if (userIndex === -1) {
+  async update(
+    id: string,
+    updateData: Partial<CreateUserInput>,
+  ): Promise<User> {
+    try {
+      const user = await this.prisma.user.update({
+        where: { id },
+        data: {
+          ...updateData,
+          bio:
+            updateData.bio !== undefined ? (updateData.bio ?? null) : undefined,
+        },
+      });
+      return this.mapPrismaUserToGraphQLUser(user);
+    } catch {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-
-    this.users[userIndex] = {
-      ...this.users[userIndex],
-      ...updateData,
-    };
-
-    return this.users[userIndex];
   }
 
-  remove(id: string): boolean {
-    const userIndex = this.users.findIndex((user) => user.id === id);
-    if (userIndex === -1) {
+  async remove(id: string): Promise<boolean> {
+    try {
+      await this.prisma.user.delete({
+        where: { id },
+      });
+      return true;
+    } catch {
       throw new NotFoundException(`User with ID ${id} not found`);
     }
-
-    this.users.splice(userIndex, 1);
-    return true;
   }
 }

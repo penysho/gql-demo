@@ -11,6 +11,6 @@ export class CreateUserInput {
   @Field()
   age: number;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   bio?: string;
 }

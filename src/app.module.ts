@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { PrismaModule } from './prisma/prisma.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -15,6 +16,7 @@ import { UserModule } from './user/user.module';
       introspection: true,
       csrfPrevention: false, // 開発環境でのみ無効化
     }),
+    PrismaModule,
     UserModule,
   ],
   controllers: [AppController],

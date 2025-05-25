@@ -12,7 +12,7 @@ export class UserResolver {
     name: 'users',
     description: '全てのユーザーを取得します',
   })
-  findAll(): User[] {
+  async findAll(): Promise<User[]> {
     return this.userService.findAll();
   }
 
@@ -20,7 +20,7 @@ export class UserResolver {
     name: 'user',
     description: '指定されたIDのユーザーを取得します',
   })
-  findOne(@Args('id', { type: () => ID }) id: string): User {
+  async findOne(@Args('id', { type: () => ID }) id: string): Promise<User> {
     return this.userService.findOne(id);
   }
 
@@ -28,7 +28,9 @@ export class UserResolver {
     name: 'createUser',
     description: '新しいユーザーを作成します',
   })
-  createUser(@Args('createUserInput') createUserInput: CreateUserInput): User {
+  async createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput,
+  ): Promise<User> {
     return this.userService.create(createUserInput);
   }
 
@@ -36,7 +38,9 @@ export class UserResolver {
     name: 'updateUser',
     description: 'ユーザー情報を更新します',
   })
-  updateUser(@Args('updateUserInput') updateUserInput: UpdateUserInput): User {
+  async updateUser(
+    @Args('updateUserInput') updateUserInput: UpdateUserInput,
+  ): Promise<User> {
     const { id, ...updateData } = updateUserInput;
     return this.userService.update(id, updateData);
   }
@@ -45,7 +49,9 @@ export class UserResolver {
     name: 'removeUser',
     description: 'ユーザーを削除します',
   })
-  removeUser(@Args('id', { type: () => ID }) id: string): boolean {
+  async removeUser(
+    @Args('id', { type: () => ID }) id: string,
+  ): Promise<boolean> {
     return this.userService.remove(id);
   }
 }

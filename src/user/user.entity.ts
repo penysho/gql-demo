@@ -14,7 +14,7 @@ export class User {
   @Field()
   age: number;
 
-  @Field({ nullable: true })
+  @Field(() => String, { nullable: true })
   bio?: string;
 
   @Field()
