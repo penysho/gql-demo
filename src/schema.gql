@@ -1,0 +1,48 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  bio: String
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Query {
+  """全てのユーザーを取得します"""
+  users: [User!]!
+
+  """指定されたIDのユーザーを取得します"""
+  user(id: ID!): User!
+}
+
+type Mutation {
+  """新しいユーザーを作成します"""
+  createUser(createUserInput: CreateUserInput!): User!
+
+  """ユーザー情報を更新します"""
+  updateUser(updateUserInput: UpdateUserInput!): User!
+
+  """ユーザーを削除します"""
+  removeUser(id: ID!): Boolean!
+}
+
+input CreateUserInput {
+  name: String!
+  email: String!
+  bio: String
+}
+
+input UpdateUserInput {
+  id: ID!
+  name: String
+  email: String
+  bio: String
+}
