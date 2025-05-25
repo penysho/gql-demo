@@ -6,8 +6,10 @@ type User {
   id: ID!
   name: String!
   email: String!
+  age: Float!
   bio: String
   createdAt: DateTime!
+  updatedAt: DateTime!
 }
 
 """
@@ -37,6 +39,7 @@ type Mutation {
 input CreateUserInput {
   name: String!
   email: String!
+  age: Float!
   bio: String
 }
 
@@ -44,5 +47,6 @@ input UpdateUserInput {
   id: ID!
   name: String
   email: String
+  age: Float
   bio: String
 }

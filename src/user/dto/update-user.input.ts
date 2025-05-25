@@ -12,5 +12,8 @@ export class UpdateUserInput {
   email?: string;
 
   @Field({ nullable: true })
+  age?: number;
+
+  @Field({ nullable: true })
   bio?: string;
 }

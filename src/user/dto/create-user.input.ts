@@ -8,6 +8,9 @@ export class CreateUserInput {
   @Field()
   email: string;
 
+  @Field()
+  age: number;
+
   @Field({ nullable: true })
   bio?: string;
 }

@@ -10,20 +10,26 @@ export class UserService {
       name: '田中太郎',
       email: 'tanaka@example.com',
       bio: 'フロントエンド開発者です',
+      age: 20,
       createdAt: new Date('2024-01-01'),
+      updatedAt: new Date('2024-01-01'),
     },
     {
       id: '2',
       name: '佐藤花子',
       email: 'sato@example.com',
       bio: 'バックエンド開発者です',
+      age: 21,
       createdAt: new Date('2024-01-02'),
+      updatedAt: new Date('2024-01-02'),
     },
     {
       id: '3',
       name: '鈴木一郎',
       email: 'suzuki@example.com',
+      age: 22,
       createdAt: new Date('2024-01-03'),
+      updatedAt: new Date('2024-01-03'),
     },
   ];
 
@@ -44,6 +50,7 @@ export class UserService {
       id: (this.users.length + 1).toString(),
       ...createUserInput,
       createdAt: new Date(),
+      updatedAt: new Date(),
     };
     this.users.push(newUser);
     return newUser;

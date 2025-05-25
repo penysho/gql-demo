@@ -11,9 +11,15 @@ export class User {
   @Field()
   email: string;
 
+  @Field()
+  age: number;
+
   @Field({ nullable: true })
   bio?: string;
 
   @Field()
   createdAt: Date;
+
+  @Field()
+  updatedAt: Date;
 }
