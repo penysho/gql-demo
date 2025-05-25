@@ -14,7 +14,6 @@ import { UserModule } from './user/user.module';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       playground: true,
       introspection: true,
-      csrfPrevention: false, // 開発環境でのみ無効化
     }),
     PrismaModule,
     UserModule,
