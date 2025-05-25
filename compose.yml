@@ -1,0 +1,14 @@
+services:
+  backend-db:
+    image: postgres:17.0-bookworm
+    container_name: gql_demo-db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - '5434:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+volumes:
+  postgres_data:
