@@ -12,7 +12,10 @@ import { UserModule } from './user/user.module';
   imports: [
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile:
+        process.env.NODE_ENV === 'production'
+          ? true // In production (Vercel), use in-memory schema
+          : join(process.cwd(), 'src/schema.gql'), // In development, write to file
       playground: true,
       introspection: true,
     }),
