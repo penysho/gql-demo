@@ -4,9 +4,7 @@
   "buildCommand": "npm run build",
   "installCommand": "npm ci",
   "functions": {
-    "dist/main.js": {
-      "runtime": "Node.js"
-    }
+    "dist/main.js": {}
   },
   "routes": [
     {
