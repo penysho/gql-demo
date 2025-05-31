@@ -17,12 +17,62 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
+type PageInfo {
+  """次のページが存在するかどうか"""
+  hasNextPage: Boolean!
+
+  """前のページが存在するかどうか"""
+  hasPreviousPage: Boolean!
+
+  """最初の要素のカーソル"""
+  startCursor: String
+
+  """最後の要素のカーソル"""
+  endCursor: String
+}
+
+type UserEdge {
+  """ノード"""
+  node: User!
+
+  """カーソル"""
+  cursor: String!
+}
+
+type UserConnection {
+  """エッジの配列"""
+  edges: [UserEdge!]!
+
+  """ページング情報"""
+  pageInfo: PageInfo!
+
+  """総数"""
+  totalCount: Float!
+}
+
 type Query {
-  """全てのユーザーを取得します"""
+  """全てのユーザーを取得します（非推奨: ページングを使用してください）"""
   users: [User!]!
+
+  """ページング対応でユーザーを取得します"""
+  usersConnection(pagination: PaginationInput): UserConnection!
 
   """指定されたIDのユーザーを取得します"""
   user(id: ID!): User!
+}
+
+input PaginationInput {
+  """コレクションから取得する要素数の上限"""
+  first: Int
+
+  """この要素の後から取得を開始するカーソル"""
+  after: String
+
+  """コレクションの末尾から取得する要素数の上限"""
+  last: Int
+
+  """この要素の前から取得を開始するカーソル"""
+  before: String
 }
 
 type Mutation {

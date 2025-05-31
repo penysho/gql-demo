@@ -1,6 +1,8 @@
 import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateUserInput } from './dto/create-user.input';
+import { PaginationInput } from './dto/pagination.input';
 import { UpdateUserInput } from './dto/update-user.input';
+import { UserConnection } from './dto/user-connection.type';
 import { User } from './user.entity';
 import { UserService } from './user.service';
 
@@ -10,10 +12,22 @@ export class UserResolver {
 
   @Query(() => [User], {
     name: 'users',
-    description: '全てのユーザーを取得します',
+    description:
+      '全てのユーザーを取得します（非推奨: ページングを使用してください）',
   })
   async findAll(): Promise<User[]> {
     return this.userService.findAll();
+  }
+
+  @Query(() => UserConnection, {
+    name: 'usersConnection',
+    description: 'ページング対応でユーザーを取得します',
+  })
+  async findAllPaginated(
+    @Args('pagination', { type: () => PaginationInput, nullable: true })
+    pagination?: PaginationInput,
+  ): Promise<UserConnection> {
+    return this.userService.findAllPaginated(pagination);
   }
 
   @Query(() => User, {
