@@ -5,7 +5,7 @@
   "installCommand": "npm ci",
   "functions": {
     "dist/main.js": {
-      "runtime": "nodejs"
+      "runtime": "Node.js"
     }
   },
   "routes": [
