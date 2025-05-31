@@ -1,12 +1,13 @@
 {
   "version": 2,
-
-  "builds": [
-    {
-      "src": "dist/main.js",
-      "use": "@vercel/node"
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "npm run build",
+  "installCommand": "npm ci",
+  "functions": {
+    "dist/main.js": {
+      "runtime": "nodejs"
     }
-  ],
+  },
   "routes": [
     {
       "src": "/(.*)",
